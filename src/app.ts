@@ -17,3 +17,5 @@ const PORT = process.env.PORT || 3400;
 app.listen(PORT, () => {
   return console.log(`Express is listening at http://localhost:${PORT}`);
 });
+
+export default app

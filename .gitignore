@@ -1,0 +1,13 @@
+# Certs
+*.pem
+*.crt
+*.key
+*.p12
+
+# Dependency directories
+node_modules/
+
+# dotenv environment variables file
+.env
+
+dist/*

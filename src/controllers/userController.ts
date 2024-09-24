@@ -4,6 +4,20 @@ import pool from "../config/db";
 export const assignRole = async (req: Request, res: Response) => {
     const { userId, role } = req.body;
 
+    if (!role || (role!== 'member' || 'admin') ) {
+        return res.status(400).json({
+          status: "error",
+          message: "Invalid role",
+        });
+      }
+    if(!userId || typeof(userId)!== 'number'){
+        return res.status(400).json({
+            status: "error",
+            message: "UserId should be of type number"
+          });
+    }
+      
+
     await pool.query('UPDATE roleguard_users SET role = $1 WHERE id = $2', [role, userId]);
     res.status(200).json({ message: 'Role updated' });
 };

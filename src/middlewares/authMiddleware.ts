@@ -3,19 +3,15 @@ import jwt from 'jsonwebtoken';
 
 export const validateToken = (req, res, next) => {
 
-    let authToken = req.headers.authorization;
+    const token = req.headers['authorization']?.split(' ')[1];
 
-    if (!authToken) {
-        res.status(401).json({ status: "failed", message: "Invalid Token!" })
+    if (!token) {
+        res.status(401).json({ success: false, message: "Invalid Token!" })
     }
-    authToken = authToken.includes("Bearer ")
-        ? authToken.split("Bearer ")[1]
-        : authToken;
-
     try {
         const key = process.env.JWT_SECRET;
 
-        return jwt.verify(authToken, key, (err, decoded) => {
+        return jwt.verify(token, key, (err, decoded) => {
             if (err) {
                 console.log(err);
                 return res
@@ -37,8 +33,8 @@ export const validateToken = (req, res, next) => {
 }
 
 export const isAdmin = (req, res: Response, next: NextFunction) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Admins only' });
-  }
-  next();
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Admins only' });
+    }
+    next();
 };

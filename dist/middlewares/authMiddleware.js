@@ -6,16 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAdmin = exports.validateToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const validateToken = (req, res, next) => {
-    let authToken = req.headers.authorization;
-    if (!authToken) {
-        res.status(401).json({ status: "failed", message: "Invalid Token!" });
+    var _a;
+    const token = (_a = req.headers['authorization']) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+    if (!token) {
+        res.status(401).json({ success: false, message: "Invalid Token!" });
     }
-    authToken = authToken.includes("Bearer ")
-        ? authToken.split("Bearer ")[1]
-        : authToken;
     try {
         const key = process.env.JWT_SECRET;
-        return jsonwebtoken_1.default.verify(authToken, key, (err, decoded) => {
+        return jsonwebtoken_1.default.verify(token, key, (err, decoded) => {
             if (err) {
                 console.log(err);
                 return res

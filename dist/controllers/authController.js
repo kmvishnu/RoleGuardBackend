@@ -9,6 +9,25 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const db_1 = __importDefault(require("../config/db"));
 const register = async (req, res) => {
     const { name, email, password } = req.body;
+    if (!name || name.length < 2 || name.length > 20) {
+        return res.status(400).json({
+            status: "error",
+            message: "Name must be between 2 and 20 characters long.",
+        });
+    }
+    if (!password || password.length < 4 || password.length > 20) {
+        return res.status(400).json({
+            status: "error",
+            message: "Password must be between 4 and 20 characters long.",
+        });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+        return res.status(400).json({
+            status: "error",
+            message: "Please provide a valid email address.",
+        });
+    }
     const hashedPassword = await bcryptjs_1.default.hash(password, 10);
     try {
         await db_1.default.query("INSERT INTO roleguard_users (name, email, password, role) VALUES ($1, $2, $3, $4)", [name, email, hashedPassword, "member"]);
@@ -22,6 +41,19 @@ const register = async (req, res) => {
 exports.register = register;
 const login = async (req, res) => {
     const { email, password } = req.body;
+    if (!password || password.length < 4 || password.length > 20) {
+        return res.status(400).json({
+            status: "error",
+            message: "Password must be between 4 and 20 characters long.",
+        });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+        return res.status(400).json({
+            status: "error",
+            message: "Please provide a valid email address.",
+        });
+    }
     try {
         const result = await db_1.default.query("SELECT * FROM roleguard_users WHERE email = $1", [email]);
         const user = result.rows[0];

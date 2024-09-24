@@ -8,7 +8,7 @@ export const routes = express.Router();
 routes.post("/login",login)
 routes.post("/register",register)
 
-routes.post('/assignRole', [validateToken, isAdmin], assignRole);
+routes.put('/assignRole', [validateToken, isAdmin], assignRole);
 routes.get('/viewAllUsers', [validateToken, isAdmin], viewAllUsers);
 
 

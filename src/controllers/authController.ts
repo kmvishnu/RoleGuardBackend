@@ -23,8 +23,6 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  
-
     try{
       const result = await pool.query(
         "SELECT * FROM roleguard_users WHERE email = $1",

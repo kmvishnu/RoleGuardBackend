@@ -4,7 +4,6 @@ import cors from "cors";
 import { MiddleWareCollections } from "./middlewares/collections";
 import { routes } from "./routes/routes";
 
-
 const app = express();
 dotenv.config();
 
@@ -18,4 +17,4 @@ app.listen(PORT, () => {
   return console.log(`Express is listening at http://localhost:${PORT}`);
 });
 
-export default app
+export default app;

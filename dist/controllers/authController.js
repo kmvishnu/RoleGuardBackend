@@ -75,7 +75,7 @@ const login = async (req, res) => {
         const token = jsonwebtoken_1.default.sign(data, jwtSecretKey);
         res
             .status(200)
-            .json({ status: "success", token, name: user ? user.name : "" });
+            .json({ status: "success", token, name: user ? user.name : "", role: user ? user.role : "member" });
     }
     catch (error) {
         console.error("Error during login:", error);

@@ -92,7 +92,7 @@ export const login = async (req: Request, res: Response) => {
     
       res
         .status(200)
-        .json({ status: "success", token, name: user ? user.name : "" });
+        .json({ status: "success", token, name: user ? user.name : "", role:user ? user.role : "member" });
     }
     catch (error) {
       console.error("Error during login:", error);

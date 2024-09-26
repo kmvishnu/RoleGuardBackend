@@ -7,7 +7,7 @@ exports.viewAllUsers = exports.assignRole = void 0;
 const db_1 = __importDefault(require("../config/db"));
 const assignRole = async (req, res) => {
     const { userId, role } = req.body;
-    if (!role || (role !== 'member' || 'admin')) {
+    if (!role || (role !== 'member' && role !== 'admin')) {
         return res.status(400).json({
             status: "error",
             message: "Invalid role",
@@ -19,8 +19,14 @@ const assignRole = async (req, res) => {
             message: "UserId should be of type number"
         });
     }
-    await db_1.default.query('UPDATE roleguard_users SET role = $1 WHERE id = $2', [role, userId]);
-    res.status(200).json({ message: 'Role updated' });
+    try {
+        await db_1.default.query('UPDATE roleguard_users SET role = $1 WHERE id = $2', [role, userId]);
+        res.status(200).json({ message: 'Role updated' });
+    }
+    catch (err) {
+        console.error("Error while updating data", err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
 };
 exports.assignRole = assignRole;
 const viewAllUsers = async (req, res) => {
